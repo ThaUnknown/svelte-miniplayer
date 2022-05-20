@@ -1,0 +1,23 @@
+{
+  "name": "svelte-miniplayer",
+  "version": "1.0.0",
+  "description": "Lightweight, fast, resizable and draggable miniplayer for Svelte.",
+  "main": "Miniplayer.svelte",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ThaUnknown/svelte-miniplayer.git"
+  },
+  "keywords": [
+    "miniplayer",
+    "pip",
+    "svelte",
+    "resizable",
+    "draggable"
+  ],
+  "author": "ThaUnknown",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ThaUnknown/svelte-miniplayer/issues"
+  },
+  "homepage": "https://github.com/ThaUnknown/svelte-miniplayer#readme"
+}
