@@ -43,7 +43,7 @@
       timeout = setTimeout(() => {
         position += istop ? ' top' : ' bottom'
         position += isleft ? ' left' : ' right'
-      }, 500)
+      }, 600)
     }
     function handleDrag ({ clientX, clientY }) {
       left = clientX - initial.x + 'px'
@@ -77,7 +77,7 @@
   class:active class:animate={!dragging} class:custompos={!position}
   style:--left={left} style:--top={top} style:--height={height} style:--width={width} style:--padding={padding} style:--maxwidth={maxwidth} style:--minwidth={minwidth}
   bind:this={container} on:dragstart|preventDefault>
-  {#if resize}
+  {#if resize && active}
     <div class='resize' use:resizable></div>
   {/if}
   <slot />
@@ -94,14 +94,15 @@
     user-select: none;
     width: 15px;
     height: 15px;
+    z-index: 100;
   }
   .active {
     position: absolute;
-    width: clamp(var(--minwidth), var(--width), var(--maxwidth))
+    width: clamp(var(--minwidth), var(--width), var(--maxwidth)) !important
   }
   .active.custompos {
-    top: clamp(var(--padding), var(--top), 100vh - var(--height) - var(--padding));
-    left: clamp(var(--padding), var(--left), 100vw - var(--width) - var(--padding));
+    top: clamp(var(--padding), var(--top), 100% - var(--height) - var(--padding)) !important;
+    left: clamp(var(--padding), var(--left), 100% - var(--width) - var(--padding)) !important;
   }
   .active.top {
     top: var(--padding) !important
@@ -127,6 +128,7 @@
     font-weight: 600;
     user-select: none;
     padding-bottom: 0.2rem;
+    text-align: center;
   }
   .dragging {
     cursor: grabbing !important;
