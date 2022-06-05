@@ -76,7 +76,7 @@
 <div class='miniplayer-container {position} {$$restProps.class}'
   class:active class:animate={!dragging} class:custompos={!position}
   style:--left={left} style:--top={top} style:--height={height} style:--width={width} style:--padding={padding} style:--maxwidth={maxwidth} style:--minwidth={minwidth}
-  bind:this={container} on:dragstart|preventDefault>
+  bind:this={container} on:dragstart|preventDefault|self>
   {#if resize && active}
     <div class='resize' use:resizable></div>
   {/if}
