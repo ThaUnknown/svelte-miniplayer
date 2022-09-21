@@ -21,10 +21,11 @@
       padding = '0px'
       const { pointerId, offsetX, offsetY } = e
       const bounds = container.getBoundingClientRect()
+      const relativeBounds = container.offsetParent.getBoundingClientRect()
       dragging = true
       position = ''
-      initial.x = offsetX
-      initial.y = bounds.height - offsetY
+      initial.x = offsetX + relativeBounds.left
+      initial.y = bounds.height - (e.target.clientHeight - offsetY) + relativeBounds.top
       width = bounds.width + 'px'
       height = bounds.height + 'px'
       handleDrag(e)
