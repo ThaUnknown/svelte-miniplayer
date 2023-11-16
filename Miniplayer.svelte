@@ -5,6 +5,7 @@
   export let minwidth = '0%'
   export let resize = true
   export let width = resize ? '400px' : 'auto'
+  const tmppadding = padding
   let height = '0px'
   let left = '0px'
   let top = '0px'
@@ -14,10 +15,8 @@
   function draggable (node) {
     const initial = { x: 0, y: 0 }
     let timeout = null
-    let tmppadding = null
     function dragStart (e) {
       clearTimeout(timeout)
-      tmppadding = padding
       padding = '0px'
       const { pointerId, offsetX, offsetY } = e
       const bounds = container.getBoundingClientRect()
@@ -29,12 +28,18 @@
       width = bounds.width + 'px'
       height = bounds.height + 'px'
       handleDrag(e)
+      document.body.addEventListener('touchmove', handleDrag)
       document.body.addEventListener('pointermove', handleDrag)
       if (pointerId) node.setPointerCapture(pointerId)
     }
-    function dragEnd ({ pointerId, clientX, clientY }) {
+    function dragEnd ({ pointerId, clientX, clientY, touches }) {
       dragging = false
       padding = tmppadding
+      if (clientX == null) {
+        clientX = left.slice(0, -2)
+        clientY = top.slice(0, -2)
+      }
+      document.body.removeEventListener('touchmove', handleDrag)
       document.body.removeEventListener('pointermove', handleDrag)
       const istop = window.innerHeight / 2 - clientY >= 0
       const isleft = window.innerWidth / 2 - clientX >= 0
@@ -46,13 +51,16 @@
         position += isleft ? ' left' : ' right'
       }, 600)
     }
-    function handleDrag ({ clientX, clientY }) {
+    function handleDrag ({ clientX, clientY, touches }) {
+      if (clientX == null) {
+        clientX = touches[0].clientX
+        clientY = touches[0].clientY
+      }
       left = clientX - initial.x + 'px'
       top = clientY - initial.y + 'px'
     }
     node.addEventListener('pointerdown', dragStart)
     node.addEventListener('pointerup', dragEnd)
-    node.addEventListener('touchstart', dragStart)
     node.addEventListener('touchend', dragEnd)
   }
 
@@ -63,14 +71,13 @@
     }
     function resizeEnd ({ pointerId }) {
       document.body.removeEventListener('pointermove', handleResize)
-      if (pointerId) node.setPointerCapture(pointerId)
+      if (pointerId) node.releasePointerCapture(pointerId)
     }
     function handleResize ({ movementX }) {
       width = width.slice(0, -2) - movementX + 'px'
     }
     node.addEventListener('pointerdown', resizeStart)
     node.addEventListener('pointerup', resizeEnd)
-    node.addEventListener('touchstart', resizeStart)
     node.addEventListener('touchend', resizeEnd)
   }
 </script>
@@ -79,7 +86,7 @@
   style:--left={left} style:--top={top} style:--height={height} style:--width={width} style:--padding={padding} style:--maxwidth={maxwidth} style:--minwidth={minwidth}
   bind:this={container} on:dragstart|preventDefault|self>
   {#if resize && active}
-    <div class='resize' use:resizable></div>
+    <div class='resize' use:resizable />
   {/if}
   <slot />
   <div class='miniplayer-footer' class:dragging use:draggable>::::</div>
