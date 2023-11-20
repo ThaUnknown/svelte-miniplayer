@@ -89,7 +89,7 @@
     <div class='resize' use:resizable />
   {/if}
   <slot />
-  <div class='miniplayer-footer' class:dragging use:draggable>::::</div>
+  <div class='miniplayer-footer' class:dragging use:draggable tabindex='-1'>::::</div>
 </div>
 
 <style>

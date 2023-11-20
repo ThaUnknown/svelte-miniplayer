@@ -1,6 +1,6 @@
 {
   "name": "svelte-miniplayer",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Lightweight, fast, resizable and draggable miniplayer for Svelte.",
   "main": "Miniplayer.svelte",
   "repository": {
